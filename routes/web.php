@@ -1,18 +1,23 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DatabaseController;
-
-// Route untuk menampilkan item dari DatabaseController
-// Route::get('/admin', [DatabaseController::class, 'index'])->name('index');
-// Route::get('/pustakawan', [DatabaseController::class, 'index'])->defaults('view', 'pustakawan')->name('dashpustakawan');
-
 
 Route::get('/login', [DatabaseController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [DatabaseController::class, 'login'])->name('login.submit');
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/dashboard', [DatabaseController::class, 'adminDashboard'])->name('dashadmin');
-    Route::get('/pustakawan/dashboard', [DatabaseController::class, 'pustakawanDashboard'])->name('dashpustakawan');
+Route::middleware('auth')->group(function () {
+    Route::get('/admin/dashboard', function() {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return app(DatabaseController::class)->adminDashboard(request());
+        }
+        return abort(403, 'Unauthorized'); // Error 403 jika bukan admin
+    })->name('dashadmin');
+
+    Route::get('/pustakawan/dashboard', function() {
+        if (Auth::check() && Auth::user()->role === 'pustakawan') {
+            return app(DatabaseController::class)->pustakawanDashboard(request());
+        }
+        return abort(403, 'Unauthorized'); // Error 403 jika bukan pustakawan
+    })->name('dashpustakawan');
 });
-
-

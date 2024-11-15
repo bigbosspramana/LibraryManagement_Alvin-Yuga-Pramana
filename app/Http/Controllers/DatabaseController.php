@@ -43,7 +43,7 @@ class DatabaseController extends Controller
 
         // Cek Pustakawan
         $pustakawan = Pustakawan::where('username', $usernameOrEmail)
-            ->orWhere('email', $usernameOrEmail)
+            ->orWhere('username', $usernameOrEmail)
             ->first();
 
         if ($pustakawan && Hash::check($password, $pustakawan->password)) {
@@ -63,21 +63,14 @@ class DatabaseController extends Controller
             abort(403, 'Unauthorized'); // Jika bukan admin, akses ditolak
         }
 
-        $type = 'admin'; // Atur tipe untuk admin
-        $view = 'admin.dashboard'; // Tentukan tampilan untuk admin
+        $type_user = 'admin'; // Atur tipe untuk admin
+        $view= 'dashadmin'; // Tentukan tampilan untuk admin
+        $type = $request->input('type');
         $sortOrder = $request->input('sort', 'asc'); // Default order ascending
 
-        $items = Item::orderBy('judul', $sortOrder)->paginate(10);  // Ambil item sesuai urutan
-
-        return view($view, compact('items', 'type', 'sortOrder'));
-    }
-
-    // Pustakawan Dashboard
-    public function pustakawanDashboard(Request $request)
-    {
-        $type = $request->session()->get('type', 'pustakawan'); // Mengambil type dari session
-        $view = $request->input('view', 'login'); // Default view adalah 'login'
-        $sortOrder = $request->input('sort', 'asc'); // Default order ascending
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc'; // Defaultkan ke 'asc' jika invalid
+        }
 
         // Tentukan model berdasarkan tipe
         switch ($type) {
@@ -105,5 +98,52 @@ class DatabaseController extends Controller
 
         return view($view, compact('items', 'type', 'sortOrder'));
     }
-}
 
+    // Pustakawan Dashboard
+    public function pustakawanDashboard(Request $request)
+    {
+        $user = Auth::user(); // Mendapatkan pengguna yang login
+        if ($user->role !== 'pustakawan') {
+            abort(403, 'Unauthorized'); // Jika bukan pustakawan, akses ditolak
+        }
+
+        $type_user = 'pustakawan'; // Atur tipe untuk pustakawan
+        $view = 'dashpustakawan'; // Tentukan tampilan untuk pustakawan
+        $type = $request->input('type');
+        $sortOrder = $request->input('sort', 'asc'); // Default order ascending
+
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc'; // Defaultkan ke 'asc' jika invalid
+        }
+
+        // Tentukan model berdasarkan tipe
+        switch ($type) {
+            case 'book':
+                $items = Book::orderBy('judul', $sortOrder)->paginate(10);
+                break;
+            case 'journal':
+                $items = Journal::orderBy('judul', $sortOrder)->paginate(10);
+                break;
+            case 'cd':
+                $items = CD::orderBy('judul', $sortOrder)->paginate(10);
+                break;
+            case 'newspaper':
+                $items = Paper::orderBy('judul', $sortOrder)->paginate(10);
+                break;
+            case 'skripsi':
+                $items = Skripsi::orderBy('judul', $sortOrder)->paginate(10);
+                break;
+            case 'ebook':
+                $items = Ebook::orderBy('judul', $sortOrder)->paginate(10);
+                break;
+            default:
+                $items = Item::orderBy('judul', $sortOrder)->paginate(10);
+        }
+
+        return view($view, compact('items', 'type', 'sortOrder'));
+
+        $items = Item::orderBy('judul', $sortOrder)->paginate(10);  // Ambil item sesuai urutan
+
+        return view($view, compact('items', 'type', 'sortOrder'));
+    }
+}

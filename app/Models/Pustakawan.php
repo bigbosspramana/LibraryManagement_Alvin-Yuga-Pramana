@@ -9,8 +9,19 @@ use Illuminate\Notifications\Notifiable;
 
 class Pustakawan extends Authenticatable
 {
+    use HasFactory;
+    
     use Notifiable;
-
-    protected $fillable = ['username', 'password'];
+    /**
+     * fillable
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'username',
+        'password',
+        'remember_token',
+        'role',
+    ];
     public $timestamps = true;
 }

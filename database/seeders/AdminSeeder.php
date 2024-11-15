@@ -18,6 +18,7 @@ class AdminSeeder extends Seeder
             [
                 'username' => 'admin123',
                 'password' => bcrypt('a1d2m3i4n5'), // Jangan lupa untuk mengenkripsi password
+                'role' => 'admin',
             ],
         ];
 
@@ -25,6 +26,7 @@ class AdminSeeder extends Seeder
             DB::table('admins')->insert([
                 'username' => $admin['username'],
                 'password' => $admin['password'],
+                'role' => $admin['role'],
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);

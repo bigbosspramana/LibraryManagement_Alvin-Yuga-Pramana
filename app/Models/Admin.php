@@ -14,7 +14,7 @@ class Admin extends Authenticatable
     use Notifiable;
 
     // Jika Anda memiliki kolom tambahan seperti "remember_token", pastikan sudah ada di tabel
-    protected $fillable = ['username', 'password'];
+    protected $fillable = ['username', 'password', 'remember_token', 'role'];
 
     // Tambahkan atribut ini jika Anda ingin menggunakan `remember_token`
     public $timestamps = true;

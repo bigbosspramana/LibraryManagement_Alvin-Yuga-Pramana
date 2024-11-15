@@ -17,31 +17,27 @@ class PustakawanSeeder extends Seeder
         $faker = Faker::create('id_ID');
         $pustakawans = [
             [
-                'email' => 'email123@gmail.com',
                 'username' => 'pustakawan1',
                 'password' => bcrypt('pUSTAKAWAN1'),
+                'role' => 'pustakawan',
             ],
             [
-                'email' => 'email456@gmail.com',
                 'username' => 'pustakawan2',
                 'password' => bcrypt('pUSTAKAWAN2'),
+                'role' => 'pustakawan',
             ],
             [
-                'email' => 'email678@gmail.com',
                 'username' => 'pustakawan3',
                 'password' => bcrypt('pUSTAKAWAN3'),
+                'role' => 'pustakwan',
             ]
         ];
 
         foreach ($pustakawans as $pustakawan) {
             DB::table('pustakawans')->insert([
-                'nama' => $faker->name,
-                'jenis_kelamin' => $faker->boolean,
-                'umur' => $faker->numberBetween(1, 80), // Faker untuk halaman
-                'tanggal_lahir' => $faker->date(), // Faker untuk tahun terbit
-                'email' => $pustakawan['email'], // Faker untuk penulis
                 'username' => $pustakawan['username'],
                 'password' => $pustakawan['password'],
+                'role' => $pustakawan['role'],
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);

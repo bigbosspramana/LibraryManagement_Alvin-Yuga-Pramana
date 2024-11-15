@@ -13,11 +13,6 @@ return new class extends Migration
     {
         Schema::create('pustakawans', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->boolean('jenis_kelamin')->comment('true = pria, false = wanita');
-            $table->integer('umur');
-            $table->string('tanggal_lahir');
-            $table->string('email');
             $table->string('username');
             $table->string('password');
             $table->string('remember_token')->nullable();

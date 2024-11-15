@@ -67,12 +67,12 @@
         <div class="row">
             <div class="col-md-12">
                 <div>
-                    <h3 class="text-center my-4">Bigboss Library</h3>
+                    <h3 class="text-center my-4">Bigboss Library [Pustakawan]</h3>
                     <hr>
                 </div>
                 <div class="card border-0 shadow-sm rounded">
                     <div class="card-body">
-                        <form method="GET" action="{{ route('index') }}">
+                        <form method="GET" action="{{ route('dashpustakawan') }}">
                             <select name="type" onchange="this.form.submit()" class="form-select w-auto">
                                 <option value="">Select Type</option>
                                 <option value="book" {{ request('type') == 'book' ? 'selected' : '' }}>Book</option>
