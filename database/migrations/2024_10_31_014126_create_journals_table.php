@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('journals', function (Blueprint $table) {
             $table->id();
-            $table->string('judul');
-            $table->integer('halaman');
-            $table->text('deskripsi');
-            $table->string('tahun_terbit');
-            $table->string('penulis');
+            $table->string('Judul Jurnal');
+            $table->integer('Halaman');
+            $table->text('Deskripsi Jurnal');
+            $table->string('Tahun Terbit');
+            $table->string('Penulis');
             $table->timestamps();
         });
     }

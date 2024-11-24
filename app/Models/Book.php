@@ -8,18 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    
+
     /**
      * fillable
      *
      * @var array
      */
     protected $fillable = [
-        'judul',
-        'halaman',
-        'deskripsi',
-        'tahun_terbit',
-        'penulis',
+        'Judul Buku',
+        'Halaman',
+        'Deskripsi Buku',
+        'Tahun Terbit',
+        'Penulis',
     ];
 }
 
