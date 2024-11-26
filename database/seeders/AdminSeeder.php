@@ -17,7 +17,7 @@ class AdminSeeder extends Seeder
         $admins = [
             [
                 'username' => 'admin123',
-                'password' => bcrypt('a1d2m3i4n5'), // Jangan lupa untuk mengenkripsi password
+                'password' => bcrypt('admin12345'), // Jangan lupa untuk mengenkripsi password
                 'role' => 'admin',
             ],
         ];

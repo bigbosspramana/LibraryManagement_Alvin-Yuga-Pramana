@@ -63,6 +63,55 @@
 
 <body>
 
+
+    @extends('layouts.app')
+
+    @section('content')
+    <div class="container mt-5">
+        <h3>Kelola Pustakawan</h3>
+        <hr>
+        <form action="{{ route('pustakawans.store') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Tambah Pustakawan</button>
+        </form>
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($pustakawans as $pustakawan)
+                <tr>
+                    <td>{{ $pustakawan->id }}</td>
+                    <td>{{ $pustakawan->name }}</td>
+                    <td>{{ $pustakawan->email }}</td>
+                    <td>{{ $pustakawan->role }}</td>
+                    <td>
+                        <form action="{{ route('pustakawans.destroy', $pustakawan->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endsection
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">

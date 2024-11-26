@@ -20,16 +20,19 @@ class PustakawanSeeder extends Seeder
                 'username' => 'pustakawan1',
                 'password' => bcrypt('pUSTAKAWAN1'),
                 'role' => 'pustakawan',
+                'type' => 'dosen',
             ],
             [
                 'username' => 'pustakawan2',
                 'password' => bcrypt('pUSTAKAWAN2'),
                 'role' => 'pustakawan',
+                'type' => 'mahasiswa',
             ],
             [
                 'username' => 'pustakawan3',
                 'password' => bcrypt('pUSTAKAWAN3'),
                 'role' => 'pustakwan',
+                'type' => 'dosen',
             ]
         ];
 
@@ -38,6 +41,7 @@ class PustakawanSeeder extends Seeder
                 'username' => $pustakawan['username'],
                 'password' => $pustakawan['password'],
                 'role' => $pustakawan['role'],
+                'type' => $pustakawan['type'],
                 'created_at' => \Carbon\Carbon::now(),
                 'updated_at' => \Carbon\Carbon::now(),
             ]);

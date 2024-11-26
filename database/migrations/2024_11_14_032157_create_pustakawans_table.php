@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('remember_token')->nullable();
             $table->string('role')->default('pustakawan');
+            $table->enum('type', ['dosen', 'mahasiswa'])->nullable();
             $table->timestamps();
         });
     }

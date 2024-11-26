@@ -24,6 +24,7 @@ class DatabaseController extends Controller
 
     public function login(Request $request)
     {
+        // Validasi input
         $request->validate([
             'username_or_email' => 'required',
             'password' => 'required',
@@ -33,28 +34,33 @@ class DatabaseController extends Controller
         $password = $request->input('password');
 
         // Cek Admin
-        $admin = Admin::where('username', $usernameOrEmail)
-            ->first(); // Menghapus duplikat kondisi yang sama
+        $admin = Admin::where('username', $usernameOrEmail)->first();
 
         if ($admin && Hash::check($password, $admin->password)) {
             Auth::guard('admin')->login($admin);
-            return redirect()->route('dashadmin')->with('type', 'admin'); // Mengirimkan type
+            return redirect()->route('dashadmin')->with('type', 'admin');
         }
 
         // Cek Pustakawan
-        $pustakawan = Pustakawan::where('username', $usernameOrEmail)
-            ->orWhere('username', $usernameOrEmail)
-            ->first();
+        $pustakawan = Pustakawan::where('username', $usernameOrEmail)->first();
 
         if ($pustakawan && Hash::check($password, $pustakawan->password)) {
             Auth::guard('pustakawan')->login($pustakawan);
-            return redirect()->route('dashpustakawan')->with('type', 'pustakawan'); // Mengirimkan type
+
+            // Redirect berdasarkan type
+            if ($pustakawan->type === 'dosen') {
+                return redirect()->route('dashdosen')->with('type', 'pustakawan-dosen');
+            } elseif ($pustakawan->type === 'mahasiswa') {
+                return redirect()->route('dashmahasiswa')->with('type', 'pustakawan-mahasiswa');
+            }
+
+            return abort(403, 'Unauthorized'); // Jika type tidak sesuai
         }
 
         // Login gagal
         return back()->withErrors(['login_failed' => 'Kredensial yang Anda masukkan salah.']);
     }
-
+    
     // Admin Dashboard
     public function adminDashboard(Request $request)
     {
@@ -64,7 +70,7 @@ class DatabaseController extends Controller
         }
 
         $type_user = 'admin'; // Atur tipe untuk admin
-        $view= 'dashadmin'; // Tentukan tampilan untuk admin
+        $view = 'dashadmin'; // Tentukan tampilan untuk admin
         $type = $request->input('type');
         $sortOrder = $request->input('sort', 'asc'); // Default order ascending
 
