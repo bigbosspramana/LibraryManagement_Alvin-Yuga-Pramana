@@ -30,20 +30,20 @@ class PustakawanController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|string|min:5',
-            'password' => 'required|string|min:5',
-            'remember_token' => 'required|string|min:4',
-            'role' => 'required|string|min:2',
+        $validated = $request->validate([
+            'username' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
+            'type' => 'required|string',
         ]);
 
-        $pustakawan = new Pustakawan();
-        $pustakawan->username = $request->username;
-        $pustakawan->password = Hash::make($request->password); // mengenkripsi password
-        $pustakawan->type = $request->type;
-        $pustakawan->save();
+        Pustakawan::create([
+            'username' => $validated['username'],
+            'password' => bcrypt($validated['password']),
+            'role' => 'pustakawan',
+            'type' => $validated['type'],
+        ]);
 
-        return redirect()->route('dashadmin')->with('success', 'Data pustakawan berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Pustakawan berhasil ditambahkan!');
     }
 
     public function destroy($id)
