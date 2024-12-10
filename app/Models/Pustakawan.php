@@ -13,10 +13,10 @@ class Pustakawan extends Authenticatable
     use HasFactory, Notifiable;
     use HasApiTokens;
 
+    protected $table = 'pustakawans'; 
     protected $fillable = [
         'username',
         'password',
-        'remember_token',
         'role',
         'type',
     ];

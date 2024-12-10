@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 //import model product
 use App\Models\Pustakawan;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +24,7 @@ class PustakawanController extends Controller
         $pustakawans = Pustakawan::all();
         Log::info($pustakawans);
         dd($pustakawans);
-        
+
         return view('dashadmin', compact('pustakawans'));
     }
 
@@ -36,9 +37,13 @@ class PustakawanController extends Controller
             'role' => 'required|string|min:2',
         ]);
 
-        Pustakawan::create($request->all());
+        $pustakawan = new Pustakawan();
+        $pustakawan->username = $request->username;
+        $pustakawan->password = Hash::make($request->password); // mengenkripsi password
+        $pustakawan->type = $request->type;
+        $pustakawan->save();
 
-        return redirect()->route('pustakawans.index')->with('success', 'Data pustakawan berhasil ditambahkan.');
+        return redirect()->route('dashadmin')->with('success', 'Data pustakawan berhasil ditambahkan.');
     }
 
     public function destroy($id)
@@ -46,6 +51,6 @@ class PustakawanController extends Controller
         $pustakawan = Pustakawan::findOrFail($id);
         $pustakawan->delete();
 
-        return redirect()->route('pustakawans.index')->with('success', 'Data pustakawan berhasil dihapus.');
+        return redirect()->route('dashadmin')->with('success', 'Data pustakawan berhasil dihapus.');
     }
 }

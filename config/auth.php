@@ -13,14 +13,14 @@ return [
     |
     */
 
-    // 'defaults' => [
-    //     'guard' => 'admin', // Gunakan 'admin' atau guard lain sesuai kebutuhan Anda
-    //     'passwords' => 'admins',
-    // ],
     'defaults' => [
-        'guard' => 'pustakawan', // Gunakan 'admin' atau guard lain sesuai kebutuhan Anda
-        'passwords' => 'pustakawans',
+        'guard' => 'admin', // Gunakan 'admin' atau guard lain sesuai kebutuhan Anda
+        'passwords' => 'admins',
     ],
+    // 'defaults' => [
+    //     'guard' => 'pustakawan', // Gunakan 'admin' atau guard lain sesuai kebutuhan Anda
+    //     'passwords' => 'pustakawans',
+    // ],
 
     /*
     |--------------------------------------------------------------------------

@@ -1,23 +1,23 @@
 <?php
 
-// namespace App\Http\Middleware;
+namespace App\Http\Middleware;
 
-// use Closure;
-// use Illuminate\Http\Request;
-// use Symfony\Component\HttpFoundation\Response;
-// use Illuminate\Support\Facades\Auth;
+use Closure;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
-// class AdminMiddleware
-// {
-//     public function handle(Request $request, Closure $next)
-//     {
-//         // Menggunakan Auth::user() untuk mendapatkan data pengguna yang sedang login
-//         $user = Auth::user();
+class AdminMiddleware
+{
+    public function handle(Request $request, Closure $next)
+    {
+        // Menggunakan Auth::user() untuk mendapatkan data pengguna yang sedang login
+        $user = Auth::user();
 
-//         if ($user && $user->role === 'admin') {
-//             return $next($request);
-//         }
+        if ($user && $user->role === 'admin') {
+            return $next($request);
+        }
 
-//         return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-//     }
-// }
+        return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+    }
+}

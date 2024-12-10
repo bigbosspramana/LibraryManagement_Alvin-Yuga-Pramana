@@ -63,31 +63,35 @@
 
 <body>
 
-
-    @extends('layouts.app')
-
-    @section('content')
     <div class="container mt-5">
         <h3>Kelola Pustakawan</h3>
         <hr>
-        <form action="{{ route('pustakawans.store') }}" method="POST">
+        <form action="{{ route('pustakawans.store') }}" method="POST" style="margin-bottom: 20px;">
             @csrf
             <div class="mb-3">
-                <label for="name" class="form-label">Nama</label>
-                <input type="text" class="form-control" id="name" name="name" required>
+                <label for="username" class="form-label" style="color: white;">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
             </div>
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="password" class="form-label" style="color: white;">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="mb-3">
+                <label for="type" class="form-label" style="color: white;">Type</label>
+                <select class="form-select" id="type" name="type" required>
+                    <option value="dosen">Dosen</option>
+                    <option value="mahasiswa">Mahasiswa</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Tambah Pustakawan</button>
         </form>
+
         <table class="table table-bordered mt-4">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nama</th>
-                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Type</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -95,9 +99,8 @@
                 @foreach ($pustakawans as $pustakawan)
                 <tr>
                     <td>{{ $pustakawan->id }}</td>
-                    <td>{{ $pustakawan->name }}</td>
-                    <td>{{ $pustakawan->email }}</td>
-                    <td>{{ $pustakawan->role }}</td>
+                    <td>{{ $pustakawan->username }}</td>
+                    <td>{{ $pustakawan->type }}</td>
                     <td>
                         <form action="{{ route('pustakawans.destroy', $pustakawan->id) }}" method="POST">
                             @csrf
@@ -110,8 +113,6 @@
             </tbody>
         </table>
     </div>
-    @endsection
-
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-12">
