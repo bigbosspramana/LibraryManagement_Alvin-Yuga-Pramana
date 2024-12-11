@@ -16,7 +16,7 @@ Route::middleware(['auth', AdminMiddleware::class])->group(function () {
 
 // Grup rute untuk pustakawan dosen
 Route::middleware(['auth', PustakawanMiddleware::class . ':dosen'])->group(function () {
-    Route::get('dashdosen', function () {
+    Route::get('/dashdosen', function () {
         return 'Ini dashboard untuk pustakawan dosen.';
     })->name('dashdosen');
 });

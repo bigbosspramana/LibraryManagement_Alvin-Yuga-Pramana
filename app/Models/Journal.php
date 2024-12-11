@@ -15,10 +15,10 @@ class Journal extends Model
      * @var array
      */
     protected $fillable = [
-        'Judul Jurnal',
-        'Halaman',
-        'Deskripsi Jurnal',
-        'Tahun Terbit',
-        'Penulis',
+        'judul',
+        'halaman',
+        'deskripsi',
+        'tahun_terbit',
+        'penulis',
     ];
 }

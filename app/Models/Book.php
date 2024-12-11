@@ -15,11 +15,11 @@ class Book extends Model
      * @var array
      */
     protected $fillable = [
-        'Judul Buku',
-        'Halaman',
-        'Deskripsi Buku',
-        'Tahun Terbit',
-        'Penulis',
+        'judul',
+        'halaman',
+        'deksripsi',
+        'tahun_terbit',
+        'penulis',
     ];
 }
 

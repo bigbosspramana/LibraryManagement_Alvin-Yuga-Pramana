@@ -1,9 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ApiLoginController;
 
-Route::post('login', [AuthController::class, 'login']);
+Route::post('/login', [ApiLoginController::class, 'login']);
 
