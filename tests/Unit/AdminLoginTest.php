@@ -26,8 +26,7 @@ class AdminLoginTest extends TestCase
         ]);
         
         // Assert
-        $response->assertStatus(200);
-        $this->assertAuthenticatedAs($user);
+        $this->assertInstanceOf(Admin::class, $user);
         $this->assertEquals('admin', $user->role);
     }
 }

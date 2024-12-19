@@ -7,8 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class Pustakawan extends Authenticatable
+class Pustakawan extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
     use HasApiTokens;
@@ -22,6 +23,14 @@ class Pustakawan extends Authenticatable
     ];
 
     public $timestamps = true;
+
+    protected $hidden = [
+        'password',
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     // Mutator untuk meng-hash password sebelum disimpan
     public function setPasswordAttribute($password)

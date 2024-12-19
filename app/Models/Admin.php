@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class Admin extends Authenticatable
+class Admin extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use HasApiTokens;
@@ -16,8 +17,16 @@ class Admin extends Authenticatable
     use Notifiable;
 
     // Jika Anda memiliki kolom tambahan seperti "remember_token", pastikan sudah ada di tabel
-    protected $fillable = ['username', 'password', 'remember_token', 'role'];
+    protected $fillable = ['username', 'password', 'role'];
 
     // Tambahkan atribut ini jika Anda ingin menggunakan `remember_token`
     public $timestamps = true;
+
+    protected $hidden = [
+        'password'
+    ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

@@ -1,12 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth; // Import Auth facade
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashAdminController;
 use App\Http\Controllers\DashPustakawanController;
 use App\Http\Controllers\PustakawanController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PustakawanMiddleware;
+use App\Http\Controllers\RegisterController;
+
+Auth::routes(['verify' => true]); // Menambahkan verifikasi email
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/pustakawans', [PustakawanController::class, 'index'])->name('pustakawans.index');
@@ -32,6 +36,10 @@ Route::middleware(['auth', PustakawanMiddleware::class . ':mahasiswa'])->group(f
 Route::get('/', [LoginController::class, 'showLoginForm']);
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+
+// Register routes
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register']);
 
 // Middleware auth untuk melindungi route admin dan pustakawan
 Route::middleware('auth')->group(function () {

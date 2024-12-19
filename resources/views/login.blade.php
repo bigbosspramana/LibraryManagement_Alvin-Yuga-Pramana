@@ -10,18 +10,26 @@
 </head>
 
 <body>
-    <form action="{{ route('login.submit') }}" method="POST">
-        @csrf
-        <div>
-            <label for="username_or_email">Username atau Email:</label>
-            <input type="text" id="username_or_email" name="username_or_email" required>
-        </div>
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <button type="submit">Login</button>
-    </form>
+    <div class="container mt-5">
+        <h2>Login</h2>
+        <form action="{{ route('login.submit') }}" method="POST">
+            @csrf
+            <div class="mb-3">
+                <label for="username_or_email" class="form-label">Username atau Email:</label>
+                <input type="text" id="username_or_email" name="username_or_email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+
+        <p class="mt-3">
+            Belum punya akun?
+            <a href="{{ route('register') }}" class="text-primary">Daftar di sini</a>
+        </p>
+    </div>
 
     @if ($errors->any())
     <ul>
