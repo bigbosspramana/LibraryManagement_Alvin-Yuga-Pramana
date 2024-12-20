@@ -34,19 +34,13 @@ class RegisterController extends Controller
                 'password' => Hash::make($request->password),
             ]);
 
-            // Log untuk melacak pengiriman email verifikasi
-            Log::info('Mencoba mengirim email verifikasi ke: ' . $admin->email);
-
-            // Kirim email verifikasi
-            $admin->sendEmailVerificationNotification();
-
-            // Log setelah email dikirim
-            Log::info('Email verifikasi terkirim ke: ' . $admin->email);
+            // Kirim email verifikasi secara manual
+            $admin->sendEmailVerificationNotification(); // Mengirim email verifikasi
 
             event(new Registered($admin));
 
-
-            return redirect()->route('register')->with('success', 'Pendaftaran Admin berhasil! Periksa email Anda untuk verifikasi.');
+            // Redirect ke halaman notifikasi verifikasi
+            return redirect()->route('verification.notice');
         }
 
         if ($role === 'pustakawan') {
@@ -62,20 +56,15 @@ class RegisterController extends Controller
                 'type' => $request->type,
             ]);
 
-            // Log untuk melacak pengiriman email verifikasi
-            Log::info('Mencoba mengirim email verifikasi ke: ' . $pustakawan->email);
-
-            // Kirim email verifikasi
-            $pustakawan->sendEmailVerificationNotification();
-
-            // Log setelah email dikirim
-            Log::info('Email verifikasi terkirim ke: ' . $pustakawan->email);
+            // Kirim email verifikasi secara manual
+            $pustakawan->sendEmailVerificationNotification(); // Mengirim email verifikasi
 
             event(new Registered($pustakawan));
 
-            return redirect()->route('register')->with('success', 'Pendaftaran Pustakawan berhasil! Periksa email Anda untuk verifikasi.');
+            // Redirect ke halaman notifikasi verifikasi
+            return redirect()->route('verification.notice');
         }
-        
+
         return back()->withErrors(['role' => 'Peran yang dipilih tidak valid.']);
     }
 }

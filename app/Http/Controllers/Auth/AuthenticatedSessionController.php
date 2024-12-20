@@ -3,45 +3,29 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Menangani proses logout pengguna.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function create(): View
+    public function destroy(Request $request)
     {
-        return view('auth.login');
-    }
+        // Melakukan logout
+        Auth::logout();
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));
-    }
-
-    /**
-     * Destroy an authenticated session.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        Auth::guard('web')->logout();
-
+        // Menghapus sesi pengguna
         $request->session()->invalidate();
 
+        // Menyegarkan sesi untuk mencegah serangan session fixation
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Mengarahkan pengguna ke halaman login atau halaman lain setelah logout
+        return redirect()->route('login');
     }
 }

@@ -9,8 +9,8 @@ use App\Http\Controllers\PustakawanController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\PustakawanMiddleware;
 use App\Http\Controllers\RegisterController;
-
-Auth::routes(['verify' => true]); // Menambahkan verifikasi email
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::middleware(['auth', AdminMiddleware::class])->group(function () {
     Route::get('/pustakawans', [PustakawanController::class, 'index'])->name('pustakawans.index');
@@ -41,8 +41,29 @@ Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register']);
 
+// Route verifikasi email
+Route::get('email/verify', function () {
+    return view('verifyemail'); // Pastikan ada file verify.blade.php
+})->middleware('auth')->name('verification.notice');
+
+Route::get('email/verify/{id}/{hash}', \App\Http\Controllers\Auth\VerifyEmailController::class, '__invoke')
+    ->middleware(['auth', 'signed'])
+    ->name('verification.verify');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+        ->name('verification.send');
+});
+
 // Middleware auth untuk melindungi route admin dan pustakawan
 Route::middleware('auth')->group(function () {
     Route::get('/admin/dashboard', [DashAdminController::class, 'adminDashboard'])->name('dashadmin');
     Route::get('/pustakawan/dashboard', [DashPustakawanController::class, 'pustakawanDashboard'])->name('dashpustakawan');
 });
+
+Route::middleware('auth')->group(function () {
+    // Route untuk logout
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+});
+

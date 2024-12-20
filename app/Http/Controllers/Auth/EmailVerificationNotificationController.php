@@ -1,24 +1,35 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class EmailVerificationNotificationController extends Controller
 {
     /**
-     * Send a new email verification notification.
+     * Kirim ulang email verifikasi.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return redirect()->intended(route('dashboard', absolute: false));
+        // Ambil pengguna yang sedang login
+        $user = $request->user();
+
+        // Pastikan pengguna belum terverifikasi
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('dashboard')->with('success', 'Akun sudah diverifikasi.');
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        // Kirim ulang email verifikasi
+        $user->sendEmailVerificationNotification();
 
-        return back()->with('status', 'verification-link-sent');
+        // Berikan pesan sukses
+        return back()->with('success', 'Email verifikasi telah dikirim ulang.');
     }
 }
+
